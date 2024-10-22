@@ -13,4 +13,6 @@ def create_app(config_name="default"):
     # 蓝图注册
     from .admin import admin_bp
     app.register_blueprint(admin_bp)
+    from .main import main_bp
+    app.register_blueprint(main_bp)
     return app

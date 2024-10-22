@@ -10,7 +10,7 @@ def index():
     addForm = WordForm()
     updateForm = WordForm()
     words = Word.query.all()
-    return render_template("index.html", words=words, addForm=addForm, updateForm=updateForm)
+    return render_template("admin.html", words=words, addForm=addForm, updateForm=updateForm)
 
 
 @admin_bp.route('add', methods=['GET', 'POST'])

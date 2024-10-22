@@ -19,7 +19,7 @@
     <main>
         {% with messages = get_flashed_messages(with_categories=True) %}
     {% if messages %}
-        <div class="container mt-3">
+        <div class="container mt-3" id="flash-container">
             {% for category, message in messages %}
                 <div class="alert alert-{{ category }} alert-dismissible fade show">{{ message }}</div>
             {% endfor %}
@@ -34,5 +34,13 @@
     <footer>
     </footer>
     {{ bootstrap.load_js() }}
+    <script>
+        setTimeout(function() {
+            var flashMessages = document.getElementById('flash-container');
+            if (flashMessages) {
+                flashMessages.style.display = 'none';
+            }
+        }, 1500); // 1500 milliseconds
+    </script>
 </body>
 </html>

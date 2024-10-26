@@ -1,20 +1,57 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<div class="container">
+<div class="container">
     <h1 class="h1">敏感词检测</h1>
-    </div>
-    <div class="container mt-3">
-        <form>
-        <div class="mb-3 mt-3">
-        <label for="text" class="mark">请输入文本：</label>
-        <textarea class="form-control" rows="15" id="text" name="text"></textarea>
-        </div>
-            <div>
-                <input type="submit">
+</div>
+
+<div class="container mt-3">
+    <form id="textForm" onsubmit="highlightSensitiveWords(event)">
+        <div class="d-flex align-items-stretch">
+            <!-- 左侧输入区域 -->
+            <div class="flex-fill me-3">
+                <div class="mb-3 mt-3">
+                    <label for="text" class="mark">请输入文本：</label>
+                    <!-- 使用 contenteditable div 作为输入框，设置固定高度 -->
+                    <div class="form-control h-100" contenteditable="true" id="text" name="text" style="min-height: 400px; font-size: 16px; overflow-y: auto;"></div>
+                </div>
+                <div>
+                    <input type="submit" value="检测" class="btn btn-primary">
+                </div>
             </div>
-        </form>
-    </div>
 
+            <!-- 右侧显示高亮内容的区域 -->
+            <div class="flex-fill">
+                <div class="mb-3 mt-3">
+                    <label class="mark">高亮显示：</label>
+                    <div id="highlightedText" class="form-control h-100" style="min-height: 400px; font-size: 16px; overflow-y: auto; display: none;"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
+<script>
+// 从后端获取正则表达式
+const regexPatterns = {{ regex_patterns | tojson }};
+console.log(regexPatterns);
+
+// 高亮函数
+function highlightSensitiveWords(event) {
+    event.preventDefault();  // 阻止表单提交
+    const textDiv = document.getElementById("text");
+    const highlightedDiv = document.getElementById("highlightedText");
+    let text = textDiv.innerHTML;  // 保留原格式
+
+    // 对每个正则表达式进行匹配和替换
+    regexPatterns.forEach(pattern => {
+        const regex = new RegExp(pattern, 'gi');  // 使用全局和不区分大小写匹配
+        text = text.replace(regex, (match) => `<span style="background-color: yellow;">${match}</span>`);
+    });
+
+    // 将高亮后的内容显示在右侧 div 中，不影响原内容
+    highlightedDiv.innerHTML = text;
+    highlightedDiv.style.display = "block";  // 显示高亮结果
+}
+</script>
 {% endblock %}

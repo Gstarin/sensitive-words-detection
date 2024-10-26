@@ -16,12 +16,13 @@ def index():
 @admin_bp.route('add', methods=['GET', 'POST'])
 def add():
     if request.method == "POST":
-
         new_word = Word(
             word=request.form.get('word'),
             regex=request.form.get('regex'),
             type=request.form.get('type'),
         )
+        if(new_word.regex == ""):
+            new_word.regex = genRegex(new_word.word)
         # add to db.session
         db.session.add(new_word)
         try:
@@ -29,7 +30,7 @@ def add():
             flash('敏感词添加成功！', 'success')
         except Exception as e:
             db.session.rollback()
-            flash('敏感词添加失败，请重试。', 'danger')
+            flash('敏感词添加失败。', 'danger')
     return redirect(url_for('admin.index'))
 
 
@@ -72,3 +73,6 @@ def delete(word_id):
 @admin_bp.route('/search/<word_id>', methods=['GET', 'POST'])
 def search(word_id):
     pass
+
+def genRegex(word):
+    return word

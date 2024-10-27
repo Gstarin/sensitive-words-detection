@@ -37,6 +37,7 @@ const regexPatterns = {{ regex_patterns | tojson }};
 console.log(regexPatterns);
 
 // 高亮函数
+// 高亮函数
 function highlightSensitiveWords(event) {
     event.preventDefault();  // 阻止表单提交
     const textDiv = document.getElementById("text");
@@ -45,7 +46,9 @@ function highlightSensitiveWords(event) {
 
     // 对每个正则表达式进行匹配和替换
     regexPatterns.forEach(pattern => {
-        const regex = new RegExp(pattern, 'gi');  // 使用全局和不区分大小写匹配
+        // 将数据库中的 `\x{4e00}-\x{9fa5}` 替换为 `\p{Script=Han}`
+        const regexStr = pattern.replace(/\\x\{4e00\}-\\x\{9fa5\}/g, '\\p{Script=Han}');
+        const regex = new RegExp(regexStr.slice(1, -2), 'gu');  // 使用 `u` 标志支持 Unicode 匹配
         text = text.replace(regex, (match) => `<span style="background-color: yellow;">${match}</span>`);
     });
 
@@ -53,5 +56,6 @@ function highlightSensitiveWords(event) {
     highlightedDiv.innerHTML = text;
     highlightedDiv.style.display = "block";  // 显示高亮结果
 }
+
 </script>
 {% endblock %}

@@ -24,12 +24,9 @@ function submitUpdateForm(event) {
     console.log(word);
     console.log(type);
 
-    // 根据 word 生成两个新的正则表达式
-    const regex1 = new RegExp(`\\b${word}\\b`); // 例如：匹配完整单词
-    const regex2 = new RegExp(`${word}.*`); // 例如：匹配以 word 开头的字符串
 
     // 将两个新正则表达式添加到现有的 regex 中
-    const updatedRegex = existingRegex + '|' + regex1.source + '|' + regex2.source;
+    const updatedRegex = existingRegex;
 
     // 构建要发送的数据
     const formData = {

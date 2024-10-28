@@ -22,17 +22,8 @@ def add():
             regex=request.form.get('regex'),
             type=request.form.get('type'),
         )
-        # 根据 word 生成两个新的正则表达式
-        regex1 = f"\\b{new_word.word}\\b"  # 匹配完整单词
-        regex2 = f"{new_word.word}.*"  # 匹配以 word 开头的字符串
-
-
-        new_regex = regex1 + '|' + regex2
-
-
-        if(new_word.regex == ""):
-            new_word.regex = genRegex(new_regex)
-
+        if(new_word.regex==''):
+            new_word.regex = genRegex(new_word.word)
         # add to db.session
         db.session.add(new_word)
         try:
@@ -85,4 +76,4 @@ def search(word_id):
     pass
 
 def genRegex(word):
-    return word
+    return '/' + word + '/u'

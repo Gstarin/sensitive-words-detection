@@ -9,7 +9,7 @@ class Config(object):
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL', 'mysql+pymysql://root:gzh040123@localhost:3306/sensitive_word_system')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL', 'mysql+pymysql://root:201915gxj@localhost:3306/sensitive_word_system')
     SQLALCHEMY_ECHO = True
 
 
